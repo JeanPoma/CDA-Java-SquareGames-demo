@@ -160,7 +160,7 @@ public class GameModel implements Playable {
                  .findFirst().orElse(null);
          if(line == null) return false;
          winningStartPosition = map.keySet().stream().filter(k->line.equals(map.get(k))).findFirst().orElse(null);
-         winningStart = map.keySet().stream().toList().indexOf(winningStartPosition);
+         //winningStart = map.keySet().stream().toList().indexOf(winningStartPosition);
          return true;
     }
 
@@ -215,6 +215,7 @@ public class GameModel implements Playable {
             if (cellState.equals(state)) {
                 count++;
                 if (count == lengthWin) {
+                    winningStart=list.indexOf(cellState);
                     return true;
                 }
             } else {
@@ -249,6 +250,8 @@ public class GameModel implements Playable {
         board.clear();
         players.clear();
         neededPlayerNum=0;
+        winningStart=-1;
+        winingLine.clear();
     }
 
 
