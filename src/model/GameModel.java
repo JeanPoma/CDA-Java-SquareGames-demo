@@ -248,6 +248,7 @@ public class GameModel implements Playable {
     public void reset() {
         board.clear();
         players.clear();
+        neededPlayerNum=0;
     }
 
 
