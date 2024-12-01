@@ -33,15 +33,15 @@ public class GameController implements Controller, GameViewListener {
 
     private void treatStates(){
         switch(currentState){
-            case QUIT -> view.show("Goodbye!");
-            case START -> { view.showStartMenu(); currentState= GameStates.NEED_PLAYER;}
+            case QUIT -> sayGoodbye();
+            case START -> treatStart();
             case RESTART -> restart();
             case CHANGE_PLAYER -> change_player();
             case ERROR_CREATION -> treatCreationError();
             case ERROR_CHOICE -> treatChoiceError();
-            case PLAYER_CREATED -> currentState = model.hasAllPlayers() ? GameStates.NEED_CHOICE : GameStates.NEED_PLAYER;
+            case PLAYER_CREATED -> onPlayerCreated();
             case CHOICE_DONE -> onChoiceDone();
-            case NEED_PLAYER-> view.showPlayerCreationMenu(model.getNeededPlayerNum());
+            case NEED_PLAYER-> askNewPlayer();
             case TIE -> treatTie();
             case VICTORY -> showVictory();
             case NEED_CHOICE -> treatNeedChoice();
@@ -53,7 +53,25 @@ public class GameController implements Controller, GameViewListener {
         }
     }
 
+    private void sayGoodbye() {
+        view.show("Goodbye!");
+    }
+
+    private void askNewPlayer() {
+        view.showPlayerCreationMenu(model.getNeededPlayerNum());
+    }
+
+    private void onPlayerCreated() {
+        currentState = model.hasAllPlayers() ? GameStates.NEED_CHOICE : GameStates.NEED_PLAYER;
+    }
+
+    private void treatStart() {
+        view.showStartMenu();
+        currentState= GameStates.NEED_PLAYER;
+    }
+
     private void treatNeedChoice(){
+        view.show(model.getCurrentName()+" it's your turn");
         if(model.isCurrentAutonomous()){
             try {
                 model.occupy();
@@ -84,6 +102,7 @@ public class GameController implements Controller, GameViewListener {
 
     private void showVictory(){
         view.showVictory(model.getCurrentName());
+        view.show("");
         currentState=GameStates.ENDED;
     }
 
@@ -99,6 +118,8 @@ public class GameController implements Controller, GameViewListener {
     
     private void onChoiceDone(){
         view.showBoard(model.getBoardRepresentation());
+        view.show(model.getCurrentName()+" your choice has been performed");
+        view.show("");
         if(model.hasWinner()){
             currentState=GameStates.VICTORY;
         } else if (model.isFull()) {
