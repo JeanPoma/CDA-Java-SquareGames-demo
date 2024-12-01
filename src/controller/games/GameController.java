@@ -3,7 +3,6 @@ package controller.games;
 import controller.Controller;
 import model.GameException;
 import model.Playable;
-import model.board.BoardException;
 import model.board.Position;
 import view.GameView;
 import view.GameViewable;
@@ -11,6 +10,7 @@ import view.data.PlayerChoice;
 import view.data.PlayerInfos;
 import view.listeners.GameViewListenable;
 import view.listeners.GameViewListener;
+import java.util.*;
 
 public class GameController implements Controller, GameViewListener {
 
@@ -102,7 +102,20 @@ public class GameController implements Controller, GameViewListener {
 
     private void showVictory(){
         view.showVictory(model.getCurrentName());
-        view.show("");
+        List<Position> winningPositions = model.getWinningLine();
+        Position start = winningPositions.getFirst();
+        Position end = winningPositions.getLast();
+        StringBuilder sb = new StringBuilder();
+        sb.append("Your winning line start: (col: ");
+        sb.append(start.getCol());
+        sb.append(" & row: ");
+        sb.append(start.getRow());
+        sb.append(") and your line end: (col ");
+        sb.append(end.getCol());
+        sb.append(" & row ");
+        sb.append(end.getRow());
+        sb.append(")\n");
+        view.show(sb.toString());
         currentState=GameStates.ENDED;
     }
 
@@ -138,6 +151,7 @@ public class GameController implements Controller, GameViewListener {
 
     @Override
     public void onQuitAsked() {
+        model.reset();
         currentState=GameStates.QUIT;
     }
 
