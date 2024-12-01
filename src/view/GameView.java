@@ -76,15 +76,26 @@ public class GameView extends AbstractView implements GameViewListenable, GameVi
 
     private String showChoosePawn(){
         show("Please choose a pawn");
-        for (String t: tokens) {
+        for (String t: getAvailableTokens()) {
             show(t);
         }
         String pawn = waitForAnswer();
-        if(!tokens.contains(pawn)) {
+        if(usedTokens.contains(pawn)) {
             showError("Sorry, the token is not available");
             showChoosePawn();
         }
+        usedTokens.add(pawn);
         return pawn;
+    }
+
+    private List<String> getAvailableTokens(){
+        List<String> tokens = new ArrayList<>();
+        for (String s: this.tokens) {
+            if(!usedTokens.contains(s)) {
+                tokens.add(s);
+            }
+        }
+        return tokens;
     }
 
     private String popAvailableToken(){
