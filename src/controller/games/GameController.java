@@ -180,8 +180,12 @@ public class GameController implements Controller, GameViewListener {
     @Override
     public void onHumanChoice(PlayerPosition choice) {
         try {
-            model.occupy(new Position(choice.col(), choice.row()));
-            currentState=GameStates.CHOICE_DONE;
+            if(model.occupy(new Position(choice.col(), choice.row()))){
+                currentState=GameStates.CHOICE_DONE;
+            } else {
+                view.showError("The cell is occupied");
+                currentState=GameStates.NEED_CHOICE;
+            }
         } catch (Exception e) {
             view.showError(e.getMessage());
             currentState = GameStates.ERROR_CHOICE;
