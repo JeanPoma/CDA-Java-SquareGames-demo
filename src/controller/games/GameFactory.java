@@ -45,9 +45,12 @@ public enum GameFactory {
         this.name = name;
     }
 
+    /*
     public Controller createController(){
         return new GameController(this);
     }
+
+     */
 
     public String getName() {
         return name;

@@ -1,6 +1,7 @@
 package controller.application;
 
 import controller.Controller;
+import controller.games.GameControllerFactory;
 import controller.games.GameFactory;
 import view.MainMenu;
 import view.MainMenuViewable;
@@ -34,7 +35,7 @@ public class Application implements Controller, MainMenuListener {
                 break;
             case GAME:
                 if(gameFactory != null){
-                    gameController = gameFactory.createController();
+                    gameController = GameControllerFactory.createGameController(gameFactory);
                     if(gameController != null){
                         gameController.start();
                         currentState= AppStates.START;
