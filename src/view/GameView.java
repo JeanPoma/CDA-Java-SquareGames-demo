@@ -1,7 +1,7 @@
 package view;
 
 import model.board.Position;
-import view.data.PlayerChoice;
+import view.data.PlayerPosition;
 import view.data.PlayerInfos;
 import view.listeners.GameViewListenable;
 import view.listeners.GameViewListener;
@@ -130,7 +130,7 @@ public class GameView extends AbstractView implements GameViewListenable, GameVi
         int col = waitForInt("column");
         int row = Position.DEFAULT;
         if(hasRow) row = waitForInt( "row");
-        fireOnHumanCHoice(new PlayerChoice(new Position(col, row)));
+        fireOnHumanCHoice(new PlayerPosition(col, row));
     }
 
     private int waitForInt(String name){
@@ -176,7 +176,7 @@ public class GameView extends AbstractView implements GameViewListenable, GameVi
         for (GameViewListener l : listeners){l.onAiPlayerCreated(token);}
     }
 
-    protected void fireOnHumanCHoice(PlayerChoice choice){
+    protected void fireOnHumanCHoice(PlayerPosition choice){
         for (GameViewListener l : listeners) {l.onHumanChoice(choice);}
     }
 

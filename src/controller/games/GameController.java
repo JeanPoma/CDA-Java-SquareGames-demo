@@ -6,7 +6,7 @@ import model.Playable;
 import model.board.Position;
 import view.GameView;
 import view.GameViewable;
-import view.data.PlayerChoice;
+import view.data.PlayerPosition;
 import view.data.PlayerInfos;
 import view.listeners.GameViewListenable;
 import view.listeners.GameViewListener;
@@ -178,9 +178,9 @@ public class GameController implements Controller, GameViewListener {
     }
 
     @Override
-    public void onHumanChoice(PlayerChoice choice) {
+    public void onHumanChoice(PlayerPosition choice) {
         try {
-            model.occupy(choice.p());
+            model.occupy(new Position(choice.col(), choice.row()));
             currentState=GameStates.CHOICE_DONE;
         } catch (Exception e) {
             view.showError(e.getMessage());
